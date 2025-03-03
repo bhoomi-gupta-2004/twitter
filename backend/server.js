@@ -9,22 +9,22 @@ const userRoutes = require("./routes/user.route.js");
 const postRoutes = require("./routes/post.route.js");
 const notificationRoutes = require("./routes/notification.route.js");
 const {connectMongoDB} = require("./db/connectMongoDB.js");
+const uploadRoutes = require("./routes/upload.route.js");
 
-// dotenv.config();
 // (async function() {
-
+	
 //     // Configuration
 //     cloudinary.config({ 
 //         cloud_name: '', 
 //         api_key: '', 
 //         api_secret: '' // Click 'View API Keys' above to copy your API secret
 //     });
-    
+
 //     // Upload an image
 //      const uploadResult = await cloudinary.uploader
 //        .upload(
 //            'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
-//                public_id: 'shoes',
+	//                public_id: 'shoes',
 //            }
 //        )
 //        .catch((error) => {
@@ -40,7 +40,7 @@ const {connectMongoDB} = require("./db/connectMongoDB.js");
 //     });
     
 //     console.log(optimizeUrl);
-    
+
 //     // Transform the image: auto-crop to square aspect_ratio
 //     const autoCropUrl = cloudinary.url('shoes', {
 //         crop: 'auto',
@@ -52,9 +52,10 @@ const {connectMongoDB} = require("./db/connectMongoDB.js");
 //     console.log(autoCropUrl);    
 // })();
 
-const uploadRoutes = require("./routes/upload.route.js");
 
 
+const __dirname = path.resolve()
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -71,15 +72,11 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-// Serve frontend in production mode
-// if (process.env.NODE_ENV === "production") {
-// 	app.use(express.static(path.join(__dirname, "frontend", "dist")));
+	app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
-// 	app.get("*", (req, res) => {
-// 		res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-// 	});
-// }
-console.log(authRoutes);
+	app.get("*", (req, res) => {
+		res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+	});
 // Start Server
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
